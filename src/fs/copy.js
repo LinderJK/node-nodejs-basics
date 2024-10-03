@@ -1,19 +1,23 @@
 import fs from 'fs/promises';
+import path from "path";
 
 const copy = async () => {
+    const __dirname = import.meta.dirname;
+    const filesPath = path.join(__dirname, 'files');
+    const filesCopyPath = path.join(__dirname, 'files_copy');
     try {
-      await fs.access('./src/fs/files')
-      await fs.access('./src/fs/files_copy')
+      await fs.access(filesPath)
+      await fs.access(filesCopyPath)
 
       throw new Error('FS operation failed');
 
     } catch (err) {
       if (err.code === 'ENOENT') {
-        if (err.path === './src/fs/files') {
+        if (err.path === filesPath) {
           throw new Error('FS operation failed');
         }
-        if (err.path === './src/fs/files_copy') {
-          await fs.mkdir('./src/fs/files_copy');
+        if (err.path === filesCopyPath) {
+          await fs.mkdir(filesCopyPath);
         }
       } else {
         console.error(err);
@@ -22,7 +26,7 @@ const copy = async () => {
     }
 
     try {
-      await fs.cp('./src/fs/files', './src/fs/files_copy', {recursive: true});
+      await fs.cp(filesPath, filesCopyPath, {recursive: true});
     } catch (err) {
       console.error(err);
     }
