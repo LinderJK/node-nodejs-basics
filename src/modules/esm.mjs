@@ -7,7 +7,8 @@ import {createServer as createServerHttp} from 'http';
 import './files/c.js'
 
 const random = Math.random();
-
+const __dirname = import.meta.dirname;
+const __filename = import.meta.filename;
 export let unknownObject;
 
 if (random > 0.5) {
