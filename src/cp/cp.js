@@ -9,10 +9,19 @@ const spawnChildProcess = async (args) => {
     const child = fork(filePath, args, { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
 
     child.stdout.on('data', (data) => {
-      process.stdout.write(data.toString());
+      process.stdout.write(`From child: ${data.toString()}\n`);
     })
 
     process.stdin.pipe(child.stdin);
+
+    child.on('exit', (code) => {
+      if (code !== 0) {
+        process.exit(code);
+      }
+    });
+    child.on('error', (err) => {
+      console.error(err);
+    });
 
   } catch (err) {
     console.error(err);
@@ -20,4 +29,4 @@ const spawnChildProcess = async (args) => {
 };
 
 // Put your arguments in function call to test this functionality
-spawnChildProcess(  [2, 5, 6, 8]);
+spawnChildProcess(  ['--some-arg', 'value1', '--other', '1337', '--arg2', '42'] );
