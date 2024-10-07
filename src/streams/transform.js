@@ -1,5 +1,5 @@
 import { Transform } from 'stream';
-const transform = async () => {;
+const transform = async () => {
     try {
         const transformStream = new Transform({
             transform(chunk, _, callback) {
