@@ -6,7 +6,10 @@ const __dirname = import.meta.dirname;
 const filePath = path.join(__dirname, 'worker.js');
 
 const performCalculations = async () => {
-    // Write your code here
+    let n = 10;
+    const cpu = cpus().length;
+
+
 };
 
 await performCalculations();
