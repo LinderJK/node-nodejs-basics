@@ -6,18 +6,12 @@ const filePath = path.join(__dirname, 'files', 'script.js');
 
 const spawnChildProcess = async (args) => {
   try {
-    const child = fork(filePath, args);
-    child.on('message', (message) => {
-      console.log(message);
-    });
-    child.on('error', (err) => {
-      console.error(err);
-    });
-    child.on('exit', (code) => {
-      if (code !== 0) {
-        console.error(`Child process exited with code ${code}`);
-      }
-    });
+    const child = fork(filePath, args, { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] });
+
+    child.stdout.on('data', (data) => {
+      process.stdout.write(data.toString());
+    })
+
   } catch (err) {
     console.error(err);
   }
