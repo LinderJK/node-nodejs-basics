@@ -4,10 +4,8 @@ import path from 'path';
 import fs from 'fs/promises';
 const compress = async () => {
     const __dirname = import.meta.dirname;
-    const filePath = path.join(__dirname, 'files', 'fileToCompress.txt');
+    const filePath = path.join(__dirname, 'files', 'fileToCompress1.txt');
     const outputFilePath = path.join(__dirname, "files", "archive.gz");
-
-
 
     try {
         await fs.access(filePath);
@@ -15,10 +13,6 @@ const compress = async () => {
         const input = createReadStream(filePath);
         const output = createWriteStream(outputFilePath);
         input.pipe(gzip).pipe(output);
-
-        output.on("finish", async() => {
-            await fs.rm(filePath);
-        })
 
     } catch (err) {
         if (err.code === 'ENOENT') {

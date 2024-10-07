@@ -14,9 +14,7 @@ const decompress = async () => {
         const input = createReadStream(filePath);
         const output = createWriteStream(outputFilePath);
         input.pipe(gunzip).pipe(output);
-        output.on("finish", async() => {
-          await fs.rm(filePath);
-        });
+
     } catch (err) {
         if (err.code === 'ENOENT') {
             throw new Error('FS operation failed');
