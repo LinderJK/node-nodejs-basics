@@ -1,20 +1,22 @@
 import { createHash } from 'crypto';
 import { createReadStream } from 'fs';
+import path from 'path';
 const calculateHash = async () => {
   try {
-    const file = createReadStream('./src/hash/files/fileToCalculateHashFor.txt');
-    if (!file) {
+    const __dirname = import.meta.dirname;
+    const filePath = path.join(__dirname, 'files', 'fileToCalculateHashFor.txt');
+    if (!filePath) {
       throw new Error('FS operation failed');
     }
    const hash = createHash('sha256');
-   hash.on('readable', () => {
-     const data = hash.read();
-     if (data) {
-       console.log(data.toString('hex'));
-     }
-   })
-   hash.write(file);
-   hash.end();
+   const stream = createReadStream(filePath);
+  
+  stream.pipe(hash);
+  hash.on('finish', () => {
+    console.log(hash.read().toString('hex'));
+  });
+
+
   } catch (err) {
     console.error(err);
   }
