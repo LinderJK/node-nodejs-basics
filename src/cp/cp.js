@@ -12,6 +12,8 @@ const spawnChildProcess = async (args) => {
       process.stdout.write(data.toString());
     })
 
+    process.stdin.pipe(child.stdin);
+
   } catch (err) {
     console.error(err);
   }
